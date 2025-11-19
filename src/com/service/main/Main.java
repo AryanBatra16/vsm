@@ -17,8 +17,13 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
     private static ServiceManager manager = new ServiceManager();
     
+    // 10-digit Phone Number Regex
     private static final String PHONE_REGEX = "^\\d{10}$"; 
-    private static final String LICENSE_PLATE_REGEX = "^[A-Z]{2}\\d[A-Z]\\d{4}$";
+    
+    // --- UPDATED INDIAN LICENSE PLATE REGEX ---
+    // Format: State(2 chars) + RTO(2 digits) + Series(1 or 2 chars) + Number(4 digits)
+    // Example: MH12AB1234 or DL01C1234
+    private static final String LICENSE_PLATE_REGEX = "^[A-Z]{2}\\d{2}[A-Z]{1,2}\\d{4}$";
 
     public static void main(String[] args) {
         boolean running = true;
@@ -170,7 +175,10 @@ public class Main {
         if(make.equals("0")) return;
 
         String model = getStringInput("Enter vehicle model: ");
-        String plate = getLicensePlateInput("Enter license plate (e.g. DL5C1234): ");
+        
+        // UPDATED PROMPT IN BOOKING
+        String plate = getLicensePlateInput("Enter license plate (e.g. MH12AB1234): ");
+        
         boolean isWarranty = getYesNoInput("Is vehicle under warranty?");
 
         List<Part> parts = new ArrayList<>();
@@ -257,10 +265,9 @@ public class Main {
                 case 2:
                     int count = getIntInput("How many extra parts?", 1, 10);
                     for(int i=0; i<count; i++) {
-                        System.out.println("Part " + (i+1) + ": 1. Engine, 2. Body");
+                        System.out.println("Part " + (i+1) + ": 1. Mechanical, 2. Body");
                         int pt = getIntInput("Type: ", 1, 2);
                         String pn = getStringInput("Part Name: ");
-                        // --- UPDATED: Price is implicitly 0.0 for now ---
                         Part p = (pt == 1) ? new MechanicalPart(pn, 0.0) : new BodyPart(pn, 0.0);
                         record.addPart(p);
                     }
@@ -334,7 +341,7 @@ public class Main {
                 String input = scanner.nextLine();
                 value = Integer.parseInt(input);
                 if (value >= min && value <= max) return value;
-                if (value == 0 && min == 0) return 0;
+                if (value == 0 && min == 0) return 0; // Allow 0 for back/exit
                 System.out.println("Number must be between " + min + " and " + max);
             } catch (NumberFormatException e) {
                 System.out.println("Invalid number.");
@@ -384,13 +391,19 @@ public class Main {
         }
     }
 
+    // --- UPDATED VALIDATION METHOD ---
     private static String getLicensePlateInput(String prompt) {
         while (true) {
             System.out.print(prompt + " ");
-            String input = scanner.nextLine().trim().toUpperCase();
-            if (input.equals("0")) return "0";
+            String rawInput = scanner.nextLine();
+            if(rawInput.trim().equals("0")) return "0";
+
+            // Clean input: Remove spaces and make uppercase
+            String input = rawInput.replace(" ", "").toUpperCase();
+
             if (Pattern.matches(LICENSE_PLATE_REGEX, input)) return input;
-            System.out.println("Invalid plate. Format: DL5C1234");
+            
+            System.out.println("Invalid plate. Format: MH12AB1234 (State-2, RTO-2, Series-1/2, Number-4)");
         }
     }
 }

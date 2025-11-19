@@ -1,0 +1,4 @@
+Name,Phone,Password,IsAdmin,ServiceCount
+System Admin,admin,1234,true,0
+Aryan Batra,9990340862,1234,false,1
+Aryan Jain,9821783077,1234,false,1

@@ -9,12 +9,19 @@ import java.util.List;
 
 public class FileHandler {
 
-    private static final String LOG_FILE = "completed_service_logs.txt";
-    private static final String USERS_FILE = "users.txt";
+    // Changed extensions to .csv so they open in Excel
+    private static final String LOG_FILE = "service_data.csv";
+    private static final String USERS_FILE = "users.csv";
+
+    // --- USER PERSISTENCE (Excel Compatible) ---
 
     public void saveUsers(List<Customer> customers) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(USERS_FILE))) {
+            // Add an Excel Header Row
+            writer.println("Name,Phone,Password,IsAdmin,ServiceCount");
+            
             for (Customer c : customers) {
+                // Customer.toString() is already formatted as: name,phone,pass...
                 writer.println(c.toString()); 
             }
         } catch (IOException e) {
@@ -25,14 +32,22 @@ public class FileHandler {
     public List<Customer> loadUsers() {
         List<Customer> loadedCustomers = new ArrayList<>();
         File file = new File(USERS_FILE);
-        if (!file.exists()) return loadedCustomers;
+        if (!file.exists()) return loadedCustomers; 
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
+            // Skip the first line (Header row)
+            reader.readLine(); 
+            
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 5) {
-                    loadedCustomers.add(new Customer(parts[0], parts[1], parts[2], Boolean.parseBoolean(parts[3]), Integer.parseInt(parts[4])));
+                    String name = parts[0];
+                    String phone = parts[1];
+                    String pass = parts[2];
+                    boolean isAdmin = Boolean.parseBoolean(parts[3]);
+                    int count = Integer.parseInt(parts[4]);
+                    loadedCustomers.add(new Customer(name, phone, pass, isAdmin, count));
                 }
             }
         } catch (IOException e) {
@@ -41,26 +56,35 @@ public class FileHandler {
         return loadedCustomers;
     }
 
+    // --- SERVICE LOGS (Excel Compatible) ---
+
     public void saveServiceLog(ServiceRecord record) {
+        boolean fileExists = new File(LOG_FILE).exists();
+        
         try (PrintWriter writer = new PrintWriter(new FileWriter(LOG_FILE, true))) {
-            writer.println("======================================");
-            writer.println("         COMPLETED SERVICE LOG        ");
-            writer.println("======================================");
-            writer.println("Customer: " + record.getCustomer().getName());
-            writer.println("Vehicle: " + record.getVehicle().getMake() + " " + record.getVehicle().getModel());
-            writer.println("---");
-            writer.println("Parts Breakdown:");
-            for (Part p : record.getPartsUsed()) {
-                writer.println(String.format(" - %-20s : $%.2f (Labor: $%.2f)", p.getPartName(), p.getPartCost(), p.calculateLaborCost()));
+            // If creating a new file, add the Excel Header Row first
+            if (!fileExists) {
+                writer.println("Customer Name,Vehicle Plate,Issue Description,Parts Cost,Labor Cost,Discount,Total Bill");
             }
-            writer.println("---");
-            writer.println(String.format("Parts Total:   $%.2f", record.getPartsCost()));
-            writer.println(String.format("Labor Total:   $%.2f", record.getLaborCost()));
-            writer.println(String.format("Subtotal:      $%.2f", record.getSubtotal()));
-            writer.println(String.format("Discount:     -$%.2f", record.getDiscount()));
-            writer.println("--------------------------------------");
-            writer.println(String.format("TOTAL BILL (Tax Inclusive): $%.2f", record.getTotalServiceCost()));
-            writer.println("\n");
+
+            // Prepare data for CSV format (avoiding commas in text to keep columns safe)
+            String customer = record.getCustomer().getName().replace(",", " ");
+            String plate = record.getVehicle().getLicensePlate();
+            String issue = record.getCustomerIssue().replace(",", ";"); // Replace commas in issue to avoid breaking CSV
+            
+            // Write a single row for this service
+            writer.printf("%s,%s,%s,%.2f,%.2f,%.2f,%.2f%n", 
+                customer, 
+                plate, 
+                issue, 
+                record.getPartsCost(), 
+                record.getLaborCost(), 
+                record.getDiscount(), 
+                record.getTotalServiceCost()
+            );
+            
+            System.out.println("Log saved to " + LOG_FILE + " (Opens in Excel)");
+
         } catch (IOException e) {
             System.err.println("Error: Could not write to log file.");
         }
@@ -68,15 +92,36 @@ public class FileHandler {
 
     public void loadAllServiceLogs() {
         System.out.println("\n--- Loading All Completed Service Logs ---");
-        try (BufferedReader reader = new BufferedReader(new FileReader(LOG_FILE))) {
+        File file = new File(LOG_FILE);
+        if (!file.exists()) {
+            System.out.println("No records found.");
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
+            // Read and print header
+            String header = reader.readLine(); 
+            // System.out.println("[Header]: " + header); 
+
+            int count = 0;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                String[] data = line.split(",");
+                if (data.length >= 7) {
+                    count++;
+                    // Format the CSV data back into a readable block for the console
+                    System.out.println("Log #" + count);
+                    System.out.println(" Customer: " + data[0]);
+                    System.out.println(" Vehicle:  " + data[1]);
+                    System.out.println(" Issue:    " + data[2]);
+                    System.out.println(" Total:    $" + data[6]);
+                    System.out.println("---------------------------");
+                }
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("No completed service logs found.");
+            if (count == 0) System.out.println("File exists but is empty.");
+            
         } catch (IOException e) {
-            System.err.println("Error reading log file.");
+            System.err.println("Error: Could not read log file.");
         }
         System.out.println("--- End of Logs ---");
     }

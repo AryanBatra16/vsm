@@ -24,7 +24,7 @@ public class ServiceManager {
         this.fileHandler = new FileHandler();
         
         this.technicians = new Technician[2];
-        this.technicians[0] = new Technician("Bob", "Engines");
+        this.technicians[0] = new Technician("Bob", "Mechanical Systems");
         this.technicians[1] = new Technician("Alice", "Bodywork");
         
         this.customers = fileHandler.loadUsers();
@@ -72,7 +72,7 @@ public class ServiceManager {
     public void bookService(Customer customer, Vehicle vehicle, String issue, List<Part> initialParts, String notes) {
         ServiceRecord newRecord = new ServiceRecord(customer, vehicle, issue);
         
-        Technician tech = (issue.toLowerCase().contains("engine")) ? technicians[0] : technicians[1];
+        Technician tech = (issue.toLowerCase().contains("mechanical")) ? technicians[0] : technicians[1];
         newRecord.assignTechnician(tech);
         
         if (notes != null && !notes.isEmpty()) {
