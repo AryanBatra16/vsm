@@ -3,6 +3,8 @@ package com.service.records;
 import com.service.data.Customer;
 import com.service.data.Vehicle;
 import com.service.parts.Part;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceRecord {
 
@@ -11,17 +13,15 @@ public class ServiceRecord {
     private Technician technician;
     private String customerIssue;
     private String status;
-
     private String mechanicNotes;
-    private double totalServiceCost;
-
+    
     private double partsCost;
     private double laborCost;
     private double subtotal;
     private double discount;
+    private double totalServiceCost;
     
-    private Part[] partsUsed;
-    private int partCount;
+    private List<Part> partsUsed;
 
     public ServiceRecord(Customer customer, Vehicle vehicle, String customerIssue) {
         this.customer = customer;
@@ -29,15 +29,11 @@ public class ServiceRecord {
         this.customerIssue = customerIssue;
         this.status = "Pending";
         this.mechanicNotes = "No notes yet.";
-        this.totalServiceCost = 0;
-        this.partsUsed = new Part[20];
-        this.partCount = 0;
-
-        this.partsCost = 0;
-        this.laborCost = 0;
-        this.subtotal = 0;
-        this.discount = 0;
+        this.partsUsed = new ArrayList<>();
     }
+
+    public void setCustomerIssue(String issue) { this.customerIssue = issue; }
+    public void setStatus(String status) { this.status = status; }
 
     public Customer getCustomer() { return customer; }
     public Vehicle getVehicle() { return vehicle; }
@@ -45,8 +41,7 @@ public class ServiceRecord {
     public String getStatus() { return status; }
     public String getCustomerIssue() { return customerIssue; }
     public String getMechanicNotes() { return mechanicNotes; }
-    public Part[] getPartsUsed() { return partsUsed; }
-    public int getPartCount() { return partCount; }
+    public List<Part> getPartsUsed() { return partsUsed; }
     public double getTotalServiceCost() { return totalServiceCost; }
 
     public double getPartsCost() { return partsCost; }
@@ -56,7 +51,7 @@ public class ServiceRecord {
 
     public void assignTechnician(Technician tech) {
         this.technician = tech;
-        this.status = "In-Progress";
+        this.status = "Pending"; 
     }
 
     public void addMechanicNotes(String notes) {
@@ -68,27 +63,21 @@ public class ServiceRecord {
     }
 
     public void addPart(Part part) {
-        if (partCount < partsUsed.length) {
-            partsUsed[partCount] = part;
-            partCount++;
-        } else {
-            System.out.println("Error: Maximum parts for this service reached.");
-        }
+        partsUsed.add(part);
     }
 
     public void calculateFinalBill() {
         double baseCost = 0;
-        double laborCost = 0;
+        double laborCalc = 0;
 
-        for (int i = 0; i < partCount; i++) {
-            Part part = partsUsed[i];
+        for (Part part : partsUsed) {
             baseCost += part.getPartCost();
-            laborCost += part.calculateLaborCost(); 
+            laborCalc += part.calculateLaborCost(); 
         }
 
         this.partsCost = baseCost;
-        this.laborCost = laborCost;
-        this.subtotal = baseCost + laborCost;
+        this.laborCost = laborCalc;
+        this.subtotal = baseCost + laborCalc;
         this.discount = 0; 
 
         if (vehicle.isUnderWarranty()) {
@@ -100,6 +89,6 @@ public class ServiceRecord {
         }
 
         this.totalServiceCost = this.subtotal - this.discount;
-        this.status = "Completed";
+        this.status = "Completed"; 
     }
 }

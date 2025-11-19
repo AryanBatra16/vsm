@@ -1,6 +1,8 @@
 package com.service.records;
 
-public class Technician {
+import java.io.Serializable;
+
+public class Technician implements Serializable {
     private String name;
     private String specialization;
 
@@ -9,11 +11,6 @@ public class Technician {
         this.specialization = specialization;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getSpecialization() {
-        return specialization;
-    }
+    public String getName() { return name; }
+    public String getSpecialization() { return specialization; }
 }

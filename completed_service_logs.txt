@@ -1,0 +1,137 @@
+======================================
+         COMPLETED SERVICE LOG        
+======================================
+Customer: Aryan Batra
+Vehicle: toyota camry
+Technician: Bob
+---
+Issue Reported: barkes (Engine); bumper (Body); 
+Mechanic Notes: Applied 50% warranty discount.
+---
+Parts/Labor Breakdown:
+  - barkes: $15.0 (Labor: $4.5)
+  - bumper: $10.0 (Labor: $2.0)
+---
+Billing Details (Tax Inclusive):
+  Parts Total: $25.0
+  Labor Total: $6.5
+  Subtotal:    $31.5
+  Discount:   -$15.75
+  --------------------
+  TOTAL BILL:  $15.75
+
+
+======================================
+         COMPLETED SERVICE LOG        
+======================================
+Customer: Aryan Jain
+Vehicle: mahindra thar
+Technician: Bob
+---
+Issue Reported: clutch plate (Engine); headlight (Body); 
+Mechanic Notes: No notes yet.
+---
+Parts/Labor Breakdown:
+  - clutch plate: $20.0 (Labor: $6.0)
+  - headlight: $5.0 (Labor: $1.0)
+---
+Billing Details (Tax Inclusive):
+  Parts Total: $25.0
+  Labor Total: $7.0
+  Subtotal:    $32.0
+  Discount:   -$0.0
+  --------------------
+  TOTAL BILL:  $32.0
+
+
+======================================
+         COMPLETED SERVICE LOG        
+======================================
+Customer: Aryan Batra
+Vehicle: toyota camry
+---
+Parts Breakdown:
+ - clutch plate Fix     : $20.00 (Labor: $6.00)
+ - barkes Fix           : $25.00 (Labor: $7.50)
+---
+Parts Total:   $45.00
+Labor Total:   $13.50
+Subtotal:      $58.50
+Discount:     -$29.25
+--------------------------------------
+TOTAL BILL (Tax Inclusive): $29.25
+
+
+======================================
+         COMPLETED SERVICE LOG        
+======================================
+Customer: Aryan Jain
+Vehicle: mahindra thar
+---
+Parts Breakdown:
+ - engine Fix           : $50.00 (Labor: $15.00)
+ - side mirror Fix      : $10.00 (Labor: $2.00)
+ - brake plate          : $20.00 (Labor: $6.00)
+---
+Parts Total:   $80.00
+Labor Total:   $23.00
+Subtotal:      $103.00
+Discount:     -$10.30
+--------------------------------------
+TOTAL BILL (Tax Inclusive): $92.70
+
+
+======================================
+         COMPLETED SERVICE LOG        
+======================================
+Customer: Aryan Batra
+Vehicle: toyota camry
+---
+Parts Breakdown:
+ - front glass Fix      : $10.00 (Labor: $2.00)
+ - bumper               : $15.00 (Labor: $3.00)
+---
+Parts Total:   $25.00
+Labor Total:   $5.00
+Subtotal:      $30.00
+Discount:     -$15.00
+--------------------------------------
+TOTAL BILL (Tax Inclusive): $15.00
+
+
+======================================
+         COMPLETED SERVICE LOG        
+======================================
+Customer: Aryan Batra
+Vehicle: maruti grand vitara
+---
+Parts Breakdown:
+ - brakes Fix           : $20.00 (Labor: $6.00)
+ - side mirrors Fix     : $15.00 (Labor: $3.00)
+---
+Parts Total:   $35.00
+Labor Total:   $9.00
+Subtotal:      $44.00
+Discount:     -$22.00
+--------------------------------------
+TOTAL BILL (Tax Inclusive): $22.00
+
+
+======================================
+         COMPLETED SERVICE LOG        
+======================================
+Customer: Aryan Batra
+Vehicle: mahindra thar
+---
+Parts Breakdown:
+ - front mirror Fix     : $10.00 (Labor: $2.00)
+ - barkes               : $20.00 (Labor: $6.00)
+---
+Parts Total:   $30.00
+Labor Total:   $8.00
+Subtotal:      $38.00
+Discount:     -$3.80
+--------------------------------------
+TOTAL BILL (Tax Inclusive): $34.20
+
+

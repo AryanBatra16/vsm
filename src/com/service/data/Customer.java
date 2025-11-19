@@ -1,58 +1,45 @@
 package com.service.data;
 
-public class Customer {
+import java.io.Serializable;
+
+public class Customer implements Serializable {
     private String name;
     private String phone;
-    private boolean isLoyaltyMember;
-
-    // --- NEW FIELDS ---
     private String password;
     private boolean isAdmin;
+    private int serviceCount; 
 
-    public Customer(String name, String phone, boolean isLoyaltyMember) {
-        this.name = name;
-        this.phone = phone;
-        this.isLoyaltyMember = isLoyaltyMember;
-        // Default password and admin status for old constructor
-        this.password = "password123"; 
-        this.isAdmin = false;
-    }
-
-    // --- NEW CONSTRUCTOR ---
-    // We'll use this for new registrations
-    public Customer(String name, String phone, String password, boolean isLoyaltyMember) {
+    public Customer(String name, String phone, String password, boolean isAdmin, int serviceCount) {
         this.name = name;
         this.phone = phone;
         this.password = password;
-        this.isLoyaltyMember = isLoyaltyMember;
-        this.isAdmin = false; // Default to false
+        this.isAdmin = isAdmin;
+        this.serviceCount = serviceCount;
     }
 
-    // --- GETTER METHODS ---
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
+    public String getPhone() { return phone; }
+    public String getPassword() { return password; }
+    public boolean isAdmin() { return isAdmin; }
+    public int getServiceCount() { return serviceCount; }
 
-    public String getPhone() {
-        return phone;
-    }
+    public void setName(String name) { this.name = name; }
+    public void setPhone(String phone) { this.phone = phone; }
 
     public boolean isLoyaltyMember() {
-        return isLoyaltyMember;
+        return serviceCount > 1; 
     }
 
-    // --- NEW METHODS ---
-    public boolean isAdmin() {
-        return isAdmin;
+    public void incrementServiceCount() {
+        this.serviceCount++;
     }
 
-    // A special method to create an admin
-    public void setIsAdmin(boolean admin) {
-        isAdmin = admin;
-    }
-
-    // Method to check password
     public boolean checkPassword(String attempt) {
         return this.password.equals(attempt);
+    }
+
+    @Override
+    public String toString() {
+        return name + "," + phone + "," + password + "," + isAdmin + "," + serviceCount;
     }
 }
