@@ -17,15 +17,9 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
     private static ServiceManager manager = new ServiceManager();
     
-    // 10-digit Phone Number Regex
-    private static final String PHONE_REGEX = "^\\d{10}$"; 
+    private static final String PHONE_REGEX = "^\\d{10}$";
     
-    // --- UPDATED INDIAN LICENSE PLATE REGEX ---
-    // Format: State(2 chars) + RTO(2 digits) + Series(1 or 2 chars) + Number(4 digits)
-    // Example: MH12AB1234 or DL01C1234
-    private static final String LICENSE_PLATE_REGEX = "^[A-Z]{2}\\d{2}[A-Z]{1,2}\\d{4}$";
-
-    public static void main(String[] args) {
+    private static final String LICENSE_PLATE_REGEX = "^[A-Z]{2}\\d{2}[A-Z]{1,2}\\d{4}$";    public static void main(String[] args) {
         boolean running = true;
         while (running) {
             System.out.println("\n--- Welcome to the Vehicle Service System ---");
@@ -50,8 +44,6 @@ public class Main {
         }
         scanner.close();
     }
-
-    // --- LOGIN FLOWS ---
 
     private static void runAdminLogin() {
         System.out.println("\n--- Admin Login ---");
@@ -109,8 +101,6 @@ public class Main {
         }
     }
 
-    // --- MENUS ---
-
     private static void runAdminMenu() {
         boolean adminRunning = true;
         while (adminRunning) {
@@ -165,8 +155,6 @@ public class Main {
         }
     }
 
-    // --- BOOKING ---
-
     private static void bookNewServiceAsCustomer(Customer customer) {
         System.out.println("\n--- Booking Service for " + customer.getName() + " ---");
         System.out.println("0. Cancel Booking");
@@ -176,7 +164,6 @@ public class Main {
 
         String model = getStringInput("Enter vehicle model: ");
         
-        // UPDATED PROMPT IN BOOKING
         String plate = getLicensePlateInput("Enter license plate (e.g. MH12AB1234): ");
         
         boolean isWarranty = getYesNoInput("Is vehicle under warranty?");
@@ -224,8 +211,6 @@ public class Main {
         
         bookNewServiceAsCustomer(customer); 
     }
-
-    // --- ADMIN EDITING ---
 
     private static void removeService() {
         manager.listAllPendingServices();
@@ -331,8 +316,6 @@ public class Main {
         manager.completeAndBillService(index, scanner);
     }
 
-    // --- INPUT HELPERS ---
-
     private static int getIntInput(String prompt, int min, int max) {
         int value = 0;
         while (true) {
@@ -391,14 +374,12 @@ public class Main {
         }
     }
 
-    // --- UPDATED VALIDATION METHOD ---
     private static String getLicensePlateInput(String prompt) {
         while (true) {
             System.out.print(prompt + " ");
             String rawInput = scanner.nextLine();
             if(rawInput.trim().equals("0")) return "0";
 
-            // Clean input: Remove spaces and make uppercase
             String input = rawInput.replace(" ", "").toUpperCase();
 
             if (Pattern.matches(LICENSE_PLATE_REGEX, input)) return input;

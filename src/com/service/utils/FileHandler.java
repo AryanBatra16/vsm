@@ -9,19 +9,14 @@ import java.util.List;
 
 public class FileHandler {
 
-    // Changed extensions to .csv so they open in Excel
     private static final String LOG_FILE = "service_data.csv";
     private static final String USERS_FILE = "users.csv";
 
-    // --- USER PERSISTENCE (Excel Compatible) ---
-
     public void saveUsers(List<Customer> customers) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(USERS_FILE))) {
-            // Add an Excel Header Row
             writer.println("Name,Phone,Password,IsAdmin,ServiceCount");
             
             for (Customer c : customers) {
-                // Customer.toString() is already formatted as: name,phone,pass...
                 writer.println(c.toString()); 
             }
         } catch (IOException e) {
@@ -36,7 +31,6 @@ public class FileHandler {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
-            // Skip the first line (Header row)
             reader.readLine(); 
             
             while ((line = reader.readLine()) != null) {
@@ -56,23 +50,18 @@ public class FileHandler {
         return loadedCustomers;
     }
 
-    // --- SERVICE LOGS (Excel Compatible) ---
-
     public void saveServiceLog(ServiceRecord record) {
         boolean fileExists = new File(LOG_FILE).exists();
         
         try (PrintWriter writer = new PrintWriter(new FileWriter(LOG_FILE, true))) {
-            // If creating a new file, add the Excel Header Row first
             if (!fileExists) {
                 writer.println("Customer Name,Vehicle Plate,Issue Description,Parts Cost,Labor Cost,Discount,Total Bill");
             }
 
-            // Prepare data for CSV format (avoiding commas in text to keep columns safe)
             String customer = record.getCustomer().getName().replace(",", " ");
             String plate = record.getVehicle().getLicensePlate();
-            String issue = record.getCustomerIssue().replace(",", ";"); // Replace commas in issue to avoid breaking CSV
+            String issue = record.getCustomerIssue().replace(",", ";");
             
-            // Write a single row for this service
             writer.printf("%s,%s,%s,%.2f,%.2f,%.2f,%.2f%n", 
                 customer, 
                 plate, 
@@ -100,21 +89,18 @@ public class FileHandler {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
-            // Read and print header
             String header = reader.readLine(); 
-            // System.out.println("[Header]: " + header); 
 
             int count = 0;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
                 if (data.length >= 7) {
                     count++;
-                    // Format the CSV data back into a readable block for the console
                     System.out.println("Log #" + count);
                     System.out.println(" Customer: " + data[0]);
                     System.out.println(" Vehicle:  " + data[1]);
                     System.out.println(" Issue:    " + data[2]);
-                    System.out.println(" Total:    $" + data[6]);
+                    System.out.println(" Total:    Rs. " + data[6]);
                     System.out.println("---------------------------");
                 }
             }

@@ -8,6 +8,6 @@ public class MechanicalPart extends Part {
 
     @Override
     public double calculateLaborCost() {
-        return this.partCost * 0.30; // 30% Labor
+        return this.partCost * 0.30;
     }
 }

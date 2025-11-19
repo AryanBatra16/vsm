@@ -120,8 +120,6 @@ public class ServiceManager {
         for (ServiceRecord r : pendingServices) {
             if (r.getCustomer().getPhone().equals(customer.getPhone())) {
                 System.out.println("Vehicle: " + r.getVehicle().getLicensePlate());
-                // Status should be Pending unless admin completed it (which removes it from list)
-                // or if we keep history. In this logic, active list = Pending.
                 System.out.println("Status: " + r.getStatus());
                 System.out.println("Issues: " + r.getCustomerIssue());
                 System.out.println("--------------------");
@@ -132,7 +130,6 @@ public class ServiceManager {
         System.out.println("----------------------------");
     }
     
-    // --- UPDATED: Fixed message ---
     public void viewMyBill(Customer customer) {
         System.out.println("\n--- Your Bills ---");
         boolean found = false;
@@ -154,7 +151,6 @@ public class ServiceManager {
         return null;
     }
 
-    // --- UPDATED: Pricing logic ---
     public void completeAndBillService(int serviceIndex, Scanner scanner) {
         ServiceRecord record = getPendingService(serviceIndex);
         if (record == null) {
@@ -163,11 +159,10 @@ public class ServiceManager {
         }
 
         System.out.println("\n--- Pricing Parts for " + record.getVehicle().getLicensePlate() + " ---");
-        // Loop through ALL parts. Any part with 0.0 cost needs a price now.
         for (Part p : record.getPartsUsed()) {
             if (p.getPartCost() == 0) {
                 while (true) {
-                    System.out.print("Enter price for '" + p.getPartName() + "': $");
+                    System.out.print("Enter price for '" + p.getPartName() + "': Rs. ");
                     try {
                         double cost = Double.parseDouble(scanner.nextLine());
                         if (cost >= 0) {
@@ -190,14 +185,14 @@ public class ServiceManager {
         System.out.println("Customer: " + record.getCustomer().getName());
         System.out.println("Vehicle:  " + record.getVehicle().getMake() + " " + record.getVehicle().getModel());
         System.out.println("------------------------------------------");
-        System.out.printf("Parts Total:     $%.2f%n", record.getPartsCost());
-        System.out.printf("Labor Total:     $%.2f%n", record.getLaborCost());
-        System.out.printf("Subtotal:        $%.2f%n", record.getSubtotal());
+        System.out.printf("Parts Total:     Rs. %.2f%n", record.getPartsCost());
+        System.out.printf("Labor Total:     Rs. %.2f%n", record.getLaborCost());
+        System.out.printf("Subtotal:        Rs. %.2f%n", record.getSubtotal());
         if(record.getDiscount() > 0) {
-            System.out.printf("Discount Applied: -$%.2f%n", record.getDiscount());
+            System.out.printf("Discount Applied: -Rs. %.2f%n", record.getDiscount());
         }
         System.out.println("------------------------------------------");
-        System.out.printf("GRAND TOTAL (Tax Inclusive): $%.2f%n", record.getTotalServiceCost());
+        System.out.printf("GRAND TOTAL (Tax Inclusive): Rs. %.2f%n", record.getTotalServiceCost());
         System.out.println("==========================================");
         
         fileHandler.saveServiceLog(record);
