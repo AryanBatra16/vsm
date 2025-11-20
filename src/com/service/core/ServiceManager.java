@@ -28,6 +28,7 @@ public class ServiceManager {
         this.technicians[1] = new Technician("Alice", "Bodywork");
         
         this.customers = fileHandler.loadUsers();
+        this.pendingServices = fileHandler.loadPendingServices();
 
         if (this.customers.isEmpty()) {
             Customer adminUser = new Customer("System Admin", "admin", "1234", true, 0);
@@ -85,7 +86,8 @@ public class ServiceManager {
         
         pendingServices.add(newRecord);
         customer.incrementServiceCount();
-        fileHandler.saveUsers(customers); 
+        fileHandler.saveUsers(customers);
+        fileHandler.savePendingServices(pendingServices); 
         
         System.out.println("Service booked successfully for " + vehicle.getLicensePlate());
     }
@@ -94,6 +96,7 @@ public class ServiceManager {
         int realIndex = index - 1;
         if (realIndex >= 0 && realIndex < pendingServices.size()) {
             ServiceRecord r = pendingServices.remove(realIndex);
+            fileHandler.savePendingServices(pendingServices);
             System.out.println("Removed service for " + r.getVehicle().getLicensePlate());
         } else {
             System.out.println("Invalid index.");
@@ -196,7 +199,8 @@ public class ServiceManager {
         System.out.println("==========================================");
         
         fileHandler.saveServiceLog(record);
-        pendingServices.remove(serviceIndex - 1); 
+        pendingServices.remove(serviceIndex - 1);
+        fileHandler.savePendingServices(pendingServices); 
     }
 
     public void loadLogs() {

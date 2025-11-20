@@ -332,20 +332,6 @@ public class Main {
         }
     }
 
-    private static double getPositiveDoubleInput(String prompt) {
-        while (true) {
-            System.out.print(prompt + " ");
-            try {
-                String input = scanner.nextLine();
-                double val = Double.parseDouble(input);
-                if (val >= 0) return val;
-                System.out.println("Must be positive.");
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid price.");
-            }
-        }
-    }
-
     private static String getStringInput(String prompt) {
         while (true) {
             System.out.print(prompt + " ");
